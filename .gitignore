@@ -1,0 +1,149 @@
+# ==========================================================
+
+# Amazon Linux 2023 Observability Stack
+
+# Git Ignore
+
+# ==========================================================
+
+# Linux
+
+*~
+*.swp
+*.swo
+
+# Logs
+
+*.log
+logs/
+nohup.out
+
+# Temporary files
+
+tmp/
+temp/
+*.tmp
+*.bak
+*.old
+
+# Archives
+
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
+# Python
+
+**pycache**/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+ENV/
+pip-wheel-metadata/
+
+# VS Code
+
+.vscode/
+
+# IntelliJ
+
+.idea/
+*.iml
+
+# Eclipse
+
+.project
+.classpath
+.settings/
+
+# macOS
+
+.DS_Store
+
+# Windows
+
+Thumbs.db
+desktop.ini
+
+# Terraform
+
+.terraform/
+terraform.tfstate
+terraform.tfstate.*
+crash.log
+
+# Ansible
+
+*.retry
+
+# Environment variables
+
+.env
+.env.*
+
+# Local configuration
+
+config.local.yaml
+config.local.yml
+
+# Certificates
+
+*.pem
+*.key
+*.crt
+*.csr
+
+# Grafana database
+
+grafana.db
+
+# Loki runtime data
+
+loki-data/
+wal/
+chunks/
+index/
+cache/
+
+# Tempo runtime data
+
+tempo-data/
+traces/
+
+# OpenTelemetry
+
+otel-data/
+
+# Node Exporter
+
+node_exporter
+
+# Downloaded binaries
+
+grafana-*
+loki-linux-amd64*
+tempo*
+alloy*
+otelcol*
+
+# Build output
+
+dist/
+build/
+
+# Coverage
+
+.coverage
+coverage.xml
+htmlcov/
+
+# IDE history
+
+.history/
+
+# Backup files
+
+backup/
