@@ -7,6 +7,22 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+source "${SCRIPT_DIR}/common.sh"
+
+require_root
+
+log_header "Installing Loki"
+
+create_system_user "loki"
+
+create_dir "/etc/loki" "loki" "loki"
+
+create_dir "/var/lib/loki" "loki" "loki"
+
+download "$LOKI_URL" "/tmp/loki.zip"
+
 ################################################################################
 # Variables
 ################################################################################
