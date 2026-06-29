@@ -2,6 +2,12 @@
 ################################################################################
 # install_grafana.sh
 #
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/common.sh"
+
+require_root
+
 # Installs Grafana OSS on Amazon Linux 2023
 ################################################################################
 
@@ -70,7 +76,7 @@ dnf makecache
 # Install Grafana
 ################################################################################
 
-info "Installing Grafana OSS..."
+log_info "Installing Grafana..."
 
 dnf install -y grafana
 
