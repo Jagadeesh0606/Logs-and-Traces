@@ -1,0 +1,112 @@
+////////////////////////////////////////////////////////////////////////////////
+// Grafana Alloy Configuration
+// Amazon Linux 2023
+////////////////////////////////////////////////////////////////////////////////
+
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Local Hostname
+////////////////////////////////////////////////////////////////////////////////
+
+local.file_match "system_logs" {
+  path_targets = [
+    {
+      __path__ = "/var/log/messages",
+      job      = "linux"
+      hostname = sys.hostname()
+    },
+
+    {
+      __path__ = "/var/log/secure",
+      job      = "security"
+      hostname = sys.hostname()
+    },
+
+    {
+      __path__ = "/var/log/httpd/access_log",
+      job      = "apache-access"
+      hostname = sys.hostname()
+    },
+
+    {
+      __path__ = "/var/log/httpd/error_log",
+      job      = "apache-error"
+      hostname = sys.hostname()
+    },
+
+    {
+      __path__ = "/var/log/python-app/*.log",
+      job      = "python"
+      hostname = sys.hostname()
+    }
+  ]
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Read Files
+////////////////////////////////////////////////////////////////////////////////
+
+loki.source.file "logs" {
+
+  targets = local.file_match.system_logs.targets
+
+  forward_to = [
+    loki.process.logs.receiver,
+  ]
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Processing Pipeline
+////////////////////////////////////////////////////////////////////////////////
+
+loki.process "logs" {
+
+  forward_to = [
+    loki.write.default.receiver,
+  ]
+
+  stage.static_labels {
+
+    values = {
+      server = sys.hostname(),
+      environment = "production",
+      os = "amazon-linux-2023"
+    }
+
+  }
+
+  stage.labels {
+
+    values = {
+      job = "",
+      hostname = "",
+      filename = ""
+    }
+
+  }
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Write to Loki
+////////////////////////////////////////////////////////////////////////////////
+
+loki.write "default" {
+
+  endpoint {
+
+    url = "http://localhost:3100/loki/api/v1/push"
+
+  }
+
+  external_labels = {
+
+    host = sys.hostname()
+
+  }
+
+}
